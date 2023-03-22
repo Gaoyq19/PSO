@@ -15,10 +15,16 @@ private:
     bool available;
     int end;
 public:
-    Machine();
-    int finished_time(); //返回机器完成当前最后一个操作的时间
-    bool isAvailable();
-    void execute(int end); //给机器添加一个操作，并更新完成时间
+    Machine():end(0),available(true){}
+    int finished_time(){
+        return end;
+    }; //返回机器完成当前最后一个操作的时间
+    bool isAvailable(){
+        return available;
+    }
+    void execute(int end){
+        this->end = end;
+    } //给机器添加一个操作，并更新完成时间
     
 };
 #endif /* Machine_hpp */

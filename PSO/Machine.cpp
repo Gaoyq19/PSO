@@ -7,13 +7,4 @@
 //
 
 #include "Machine.hpp"
-Machine::Machine():end(0),available(true){}
-int Machine::finished_time(){
-    return end;
-}
-bool Machine::isAvailable(){
-    return available;
-}
-void Machine::execute(int end){
-    this->end = end;
-}
+
