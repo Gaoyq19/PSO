@@ -12,19 +12,17 @@
 #include <stdio.h>
 class Machine{
 private:
-    bool available;
     int end;
 public:
-    Machine():end(0),available(true){}
+    Machine():end(0){}
     int finished_time(){
         return end;
     }; //返回机器完成当前最后一个操作的时间
-    bool isAvailable(){
-        return available;
-    }
     void execute(int end){
         this->end = end;
     } //给机器添加一个操作，并更新完成时间
-    
+    void reset(){
+        end = 0;
+    }
 };
 #endif /* Machine_hpp */
