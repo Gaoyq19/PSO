@@ -15,7 +15,7 @@ private:
     int end;
 public:
     Machine():end(0){}
-    int finished_time(){
+    int finished_time() const{
         return end;
     }; //返回机器完成当前最后一个操作的时间
     void execute(int end){
