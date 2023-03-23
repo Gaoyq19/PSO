@@ -38,17 +38,18 @@ ExecutionAgent::ExecutionAgent(){
         splitStr(arr, s); //第一个数为operations的个数，其余以此形式存储（n,s1,t1,..,sn,tn），n代表每个操作可在n个机器执行，s为机器序号，t代表执行时间。
         int k = 1;
         int size = arr[0];
+        operations_n += size;
         jobs[index].set_opr(size + 1); //避免vector动态分配
         for (int i = 0; i < size; i++) {
             //每个job添加所有的操作，以及机器与耗时
-            Operation *opr = new Operation(); //add_opr参数为引用，避免被销毁
+            Operation opr;
             int n = arr[k]; //arr[k]代表n，arr[k+1]代表s，arr[k+2]代表t
             for (int j = 0; j < n; j++) {
                 
-                opr->add_machine(arr[k + 1], arr[k + 2]);
+                opr.add_machine(arr[k + 1], arr[k + 2]);
                 k += 2;
             }
-            jobs[index].add_opr(*opr, index); 
+            jobs[index].add_opr(opr, index); 
             k++;
         }
     }
