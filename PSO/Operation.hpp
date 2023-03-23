@@ -32,6 +32,12 @@ public:
         execution_machine = machine_i;
         return end;
     }
+    void set_job(int i){
+        job_number = i;
+    }
+    void set_oprNum(int i){
+        opr_number = i;
+    }
     int get_jobNumber() const{
         return job_number;
     }
