@@ -58,6 +58,11 @@ public:
         end = 0;
         execution_machine = 0;
     }
+    int random_selectMachine(){
+        int n = machines.size();
+        int r = rand() % n;
+        return machines[r];
+    }
 //    void setJob(int i);
 //    void setOprNum(int i);
 };

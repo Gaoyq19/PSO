@@ -36,10 +36,13 @@ public:
         finished_n++;
         return end;
     }
+    void execute(){ //空执行，辅助初始化
+        finished_n++;
+    }
     void set_opr(int size){
         operations.resize(size);
     }
-    void add_opr(Operation &opr, int i){
+    void add_opr(Operation opr, int i){
         opr.set_job(i);
         opr.set_oprNum(n);
         operations[n] = opr;
@@ -51,6 +54,9 @@ public:
         for (int i = 1; i < operations.size(); i++) {
             operations[i].reset();
         }
+    }
+    int random_selectMachine(){
+        return operations[finished_n].random_selectMachine();
     }
 private:
     vector<Operation> operations;
