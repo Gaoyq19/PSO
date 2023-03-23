@@ -15,10 +15,16 @@
 using namespace std;
 class Job{
 public:
-    int finished_time(){ //返回job当前已完成的操作的结束时间
+    int finished_time() const{ //返回job当前已完成的操作的结束时间
         return end;
     }
-    bool isFinished(){
+    int size() const{
+        return n;
+    }
+    Operation get_opr(int i) const{
+        return operations[i];
+    }
+    bool isFinished() const{
         if (finished_n == n) {
             return true;
         } else {
