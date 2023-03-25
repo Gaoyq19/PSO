@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <vector>
 #include <string>
+#include <random>
 #include "Job.hpp"
 #include "ExecutionAgent.hpp"
 #include "Machine.hpp"
@@ -30,13 +31,20 @@ public:
     void calculate(Assist &assist); //计算makespan
     void toJson(Assist &assist); //将向量所代表的意义转为json格式文件进行储存，便于可视化展示
     Particle(Assist &assist); //初始化向量，默认随机生成向量
+    void update();//根据SS对粒子位置进行更新
+    void getSwapSequence();//根据聚类最佳、个人最佳求得粒子的SS
 private:
     vector<int> pbestJobVec; //personalbest向量
     vector<int> pbestMachineVec; //personalbest向量
     vector<int> jobVec;
     vector<int> machineVec;
+    vector<vector<int>> swapSequence_pJ;
+    vector<vector<int>> swapSequence_pM;//
+    vector<vector<int>> swapSequence_c; //聚类最佳
     int makespan;
     int pmakspan;
+    double c1;
+    double c2;
     string fillZero(const string &s); //辅助json数据的构造
 };
 #endif /* Particle_hpp */

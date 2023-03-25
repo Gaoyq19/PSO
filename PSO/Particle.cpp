@@ -38,11 +38,13 @@ Particle::Particle(Assist &assist){
 void Particle::calculate(Assist &assist){
     int job_i;
     int machine_i;
-    int start_time;
+    int start_time; //每次操作的开始时间（满足：当前任务的上个操作完工，机器空闲）
     int end;
     int fin = 0;
     for (int i = 0; i < jobVec.size(); i++) {
         job_i = jobVec[i];
+        //交换操作后，存在机器不执行该操作的可能，进行更改
+        machineVec[i] = assist.jobs[job_i].check(machineVec[i]);
         machine_i = machineVec[i];
         start_time = max(assist.machines[machine_i].finished_time(), assist.jobs[job_i].finished_time());
         end = assist.jobs[job_i].execute(start_time, machine_i);
@@ -56,6 +58,53 @@ void Particle::calculate(Assist &assist){
         pbestMachineVec = machineVec;
     }
     assist.reset();
+}
+void Particle::getSwapSequence(){
+    vector<int> tmp = jobVec;
+    vector<int> tmp1 = machineVec;
+    for (int i = 0; i < pbestJobVec.size(); i++) {
+        if (pbestJobVec[i] == tmp[i]) {
+            continue;
+        }
+        for (int j = i + 1; j < jobVec.size(); j++) {
+            if (pbestJobVec[i] == tmp[j]) {
+                swapSequence_pJ.push_back(vector<int>{i,j});
+                swap(tmp[i],tmp[j]);
+                break;
+            }
+        }
+    }
+    for (int i = 0; i < pbestMachineVec.size(); i++) {
+        if (pbestMachineVec[i] == tmp1[i]) {
+            continue;
+        }
+        for (int j = i + 1; j < machineVec.size(); j++) {
+            if (pbestMachineVec[i] == tmp1[j]) {
+                swapSequence_pM.push_back(vector<int>{i,j});
+                swap(tmp[i],tmp[j]);
+                break;
+            }
+        }
+    }
+}
+void Particle::update(){
+    default_random_engine e(time(0));
+    for (int i = 0; i < swapSequence_pJ.size(); i++) {
+        uniform_real_distribution<double> r(0,1);
+        if (r(e) < c1) {
+            int k1 = swapSequence_pJ[i][0];
+            int k2 = swapSequence_pJ[i][1];
+            swap(jobVec[k1], jobVec[k2]);
+        }
+    }
+    for (int i = 0; i < swapSequence_pM.size(); i++) {
+        uniform_real_distribution<double> r(0,1);
+        if (r(e) < c1) {
+            int k1 = swapSequence_pM[i][0];
+            int k2 = swapSequence_pM[i][1];
+            swap(machineVec[k1], machineVec[k2]);
+        }
+    }
 }
 string Particle::fillZero(const string &s){
     string str;
