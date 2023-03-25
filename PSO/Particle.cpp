@@ -9,6 +9,7 @@
 #include "Particle.hpp"
 #include "json/json.h"
 #include <fstream>
+#include <list>
 #include <iostream>
 using namespace std;
 void Assist::reset(){
@@ -32,6 +33,7 @@ Particle::Particle(Assist &assist){
         machineVec[i] = assist.jobs[r].random_selectMachine();
         assist.jobs[r].execute();
     }
+    assist.reset();
 }
 void Particle::calculate(Assist &assist){
     int job_i;
@@ -78,16 +80,26 @@ void Particle::toJson(Assist &assist){
         assist.machines[machine_i].execute(end);
         fin = max(end, fin);
     }
-    Json::Value root;/*JSON文件的根节点*/
+    
+    //将操作根据执行机器序号排序，有助于画图时美观
+    vector<vector<Operation>> m(assist.machines.size());
     for (int i = 1; i < assist.jobs.size(); i++) {
         for (int j = 0; j < assist.jobs[i].size(); j++) {
+            int k = assist.jobs[i].get_opr(j).get_machineNumber();
+            m[k].push_back(assist.jobs[i].get_opr(j));
+        }
+    }
+    
+    Json::Value root;/*JSON文件的根节点*/
+    for (int i = 1; i < assist.machines.size(); i++) {
+        for (int j = 0; j < m[i].size(); j++) {
             Json::Value opr;
-            const Operation &tmp = assist.jobs[i].get_opr(j);
+            const Operation &tmp = m[i][j];
             string str = "Job" + to_string(tmp.get_jobNumber()) + "-" + to_string(tmp.get_oprNumber());
             opr["Task"] = Json::Value("Machine:" + to_string(tmp.get_machineNumber()));
             opr["Start"] = Json::Value(fillZero(to_string(tmp.get_startTime())));
-            opr["Finish"] = Json::Value(fillZero(to_string(tmp.get_startTime())));
-            opr["Status"] = Json::Value("Job:" + to_string(tmp.get_machineNumber()));
+            opr["Finish"] = Json::Value(fillZero(to_string(tmp.get_endTime())));
+            opr["Status"] = Json::Value("Job:" + to_string(tmp.get_jobNumber()));
             opr["Description"] = Json::Value(str);
             root["makespan"] = Json::Value(to_string(fin));
             root["operations"].append(opr);
@@ -97,7 +109,7 @@ void Particle::toJson(Assist &assist){
     assist.reset();
     /*缩进输出到终端*/
     Json::StyledWriter sw;
-//        cout << sw.write(root) << endl << endl;
+    cout << sw.write(root) << endl << endl;
     /*输出到JSON文件*/
     ofstream desFile("des.json", ios::trunc | ios::out );
     if (!desFile.is_open()){
