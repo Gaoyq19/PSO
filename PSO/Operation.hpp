@@ -53,6 +53,8 @@ public:
     int get_endTime() const{
         return end;
     }
+    int check(int machine_i); //如果机器序号不存在，则挑选执行时间最短的机器。
+    
     void reset(){ //重置开始结束时间和执行机器
         start = 0;
         end = 0;

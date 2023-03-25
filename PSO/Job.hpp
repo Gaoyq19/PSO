@@ -15,6 +15,9 @@
 using namespace std;
 class Job{
 public:
+    int check(int machine_i){
+        return operations[finished_n].check(machine_i);
+    }
     int finished_time() const{ //返回job当前已完成的操作的结束时间
         return end;
     }
@@ -24,6 +27,9 @@ public:
     Operation get_opr(int i) const{
         return operations[i];
     }
+    void set_opr(int size){
+        operations.resize(size);
+    }
     bool isFinished() const{
         if (finished_n == n) {
             return true;
@@ -31,16 +37,13 @@ public:
             return false;
         }
     }
-    int execute(int start, int machine_i){ // 开始时间、机器序号
+    int execute(int start, int machine_i){ //  记录已完成的操作，和完成的时间。
         end = operations[finished_n].execute(start, machine_i);
         finished_n++;
         return end;
     }
     void execute(){ //空执行，辅助初始化
         finished_n++;
-    }
-    void set_opr(int size){
-        operations.resize(size);
     }
     void add_opr(Operation opr, int i){
         opr.set_job(i);
@@ -58,6 +61,7 @@ public:
     int random_selectMachine(){
         return operations[finished_n].random_selectMachine();
     }
+    
 private:
     vector<Operation> operations;
     int n = 0; //操作的数量
