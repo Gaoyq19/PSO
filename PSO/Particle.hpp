@@ -10,22 +10,10 @@
 #define Particle_hpp
 
 #include <stdio.h>
-#include <vector>
-#include <string>
 #include <random>
-#include "Job.hpp"
-#include "ExecutionAgent.hpp"
-#include "Machine.hpp"
+#include "Assist.hpp"
 using namespace std;
 //辅助计算、构造，方便根据两个向量计算，记录每个操作在哪个机器执行及开始结束时间，以及makespan
-class Assist{
-public:
-    const int operations_n;
-    vector<Job> jobs; 
-    vector<Machine> machines;
-    Assist(const ExecutionAgent &eA):jobs(eA.get_jobs()),machines(eA.get_machines()),operations_n(eA.get_operationsNumber()){}
-    void reset();
-};
 class Particle{
 public:
     void calculate(Assist &assist); //计算makespan

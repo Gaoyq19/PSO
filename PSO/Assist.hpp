@@ -10,13 +10,14 @@
 #define Assist_hpp
 
 #include <stdio.h>
-#include "ExecutionAgent.hpp"
+#include "Job.hpp"
+#include "Machine.hpp"
 class Assist{
 public:
     const int operations_n;
     vector<Job> jobs;
     vector<Machine> machines;
-    Assist(const ExecutionAgent &eA):jobs(eA.get_jobs()),machines(eA.get_machines()),operations_n(eA.get_operationsNumber()){}
+    Assist(vector<Job> j, vector<Machine> m, int n):jobs(j),machines(m),operations_n(n){}
     void reset();
 };
 

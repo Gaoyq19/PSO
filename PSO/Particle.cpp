@@ -12,14 +12,6 @@
 #include <list>
 #include <iostream>
 using namespace std;
-void Assist::reset(){
-    for (int i = 1; i < jobs.size(); i++) {
-        jobs[i].reset();
-    }
-    for (int i = 1; i <= machines.size(); i++) {
-        machines[i].reset();
-    }
-}
 Particle::Particle(Assist &assist){
     int n = assist.jobs.size() - 1;
     jobVec.resize(assist.operations_n);
