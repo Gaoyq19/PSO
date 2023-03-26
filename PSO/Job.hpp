@@ -63,7 +63,7 @@ public:
     }
     
 private:
-    vector<Operation> operations;
+    vector<Operation> operations; //set_opr和add_opr初始化
     int n = 0; //操作的数量
     int finished_n = 0;
     int end = 0;

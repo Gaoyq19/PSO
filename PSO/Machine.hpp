@@ -12,9 +12,8 @@
 #include <stdio.h>
 class Machine{
 private:
-    int end;
+    int end = 0;
 public:
-    Machine():end(0){}
     int finished_time() const{
         return end;
     }; //返回机器完成当前最后一个操作的时间

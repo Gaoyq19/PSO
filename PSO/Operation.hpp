@@ -15,11 +15,12 @@
 using namespace std;
 class Operation{
 private:
+    //add_machine时对其赋值
     map<int, int> execution_time; //execution_time[key] : value, key号机器执行它花费的时间
     vector<int> machines; //可执行该操作的机器集合
-    int job_number; //该操作所属job序号
-    int opr_number; //操作序号
-    int execution_machine; //执行该操作的机器
+    int job_number = -1; //该操作所属job序号
+    int opr_number = -1; //操作序号
+    int execution_machine = -1; //执行该操作的机器
     int start = 0,end = 0;
 public:
     void add_machine(int number, int time){  //记录可执行该操作的机器以及时间
