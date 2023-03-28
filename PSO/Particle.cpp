@@ -8,14 +8,16 @@
 
 #include "Particle.hpp"
 #include "json/json.h"
+#include "Job.hpp"
+#include "Machine.hpp"
 #include <fstream>
 #include <list>
 #include <iostream>
 using namespace std;
 Particle::Particle(Assist &assist){
     int n = assist.jobs.size() - 1;
-    jobVec.resize(assist.operations_n);
-    machineVec.resize(assist.operations_n);
+    jobVec.reserve(assist.operations_n);
+    machineVec.reserve(assist.operations_n);
     for (int i = 0; i < assist.operations_n; i++) {
         int r = rand() % n + 1;
         while (assist.jobs[r].isFinished()) {   //随机选择一个未完成的作业
@@ -26,6 +28,40 @@ Particle::Particle(Assist &assist){
         assist.jobs[r].execute();
     }
     assist.reset();
+    pbestJobVec = jobVec;
+    pbestMachineVec = machineVec;
+    
+}
+int Particle::get_dis(shared_ptr<Particle> p1, shared_ptr<Particle> p2){
+    vector<int> tmp = p1->jobVec;
+    vector<int> tmp1 = p1->machineVec;
+    int dis = 0;
+    for (int i = 0; i < p1->jobVec.size(); i++) {
+        if (p2->jobVec[i] == tmp[i]) {
+            continue;
+        }
+        for (int j = i + 1; j < p1->jobVec.size(); j++) {
+            if (p2->jobVec[i] == tmp[j]) {
+                dis++;
+                swap(tmp[i],tmp[j]);
+                break;
+            }
+        }
+    }
+    
+    for (int i = 0; i < p1->machineVec.size(); i++) {
+        if (p2->machineVec[i] == tmp1[i]) {
+            continue;
+        }
+        for (int j = i + 1; j < p1->machineVec.size(); j++) {
+            if (p2->machineVec[i] == tmp1[j]) {
+                dis++;
+                swap(tmp1[i],tmp1[j]);
+                break;
+            }
+        }
+    }
+    return dis;
 }
 void Particle::calculate(Assist &assist){
     int job_i;
@@ -51,7 +87,7 @@ void Particle::calculate(Assist &assist){
     }
     assist.reset();
 }
-void Particle::getSwapSequence(){
+void Particle::makeSwapSequence(){
     vector<int> tmp = jobVec;
     vector<int> tmp1 = machineVec;
     for (int i = 0; i < pbestJobVec.size(); i++) {
@@ -78,9 +114,34 @@ void Particle::getSwapSequence(){
             }
         }
     }
+    for (int i = 0; i < lbestJobVec.size(); i++) {
+        if (lbestJobVec[i] == tmp[i]) {
+            continue;
+        }
+        for (int j = i + 1; j < jobVec.size(); j++) {
+            if (lbestJobVec[i] == tmp[j]) {
+                swapSequence_lbJ.push_back(vector<int>{i,j});
+                swap(tmp[i],tmp[j]);
+                break;
+            }
+        }
+    }
+    for (int i = 0; i < lbestMachineVec.size(); i++) {
+        if (lbestMachineVec[i] == tmp1[i]) {
+            continue;
+        }
+        for (int j = i + 1; j < machineVec.size(); j++) {
+            if (lbestMachineVec[i] == tmp1[j]) {
+                swapSequence_lbM.push_back(vector<int>{i,j});
+                swap(tmp[i],tmp[j]);
+                break;
+            }
+        }
+    }
 }
 void Particle::update(){
     default_random_engine e(time(0));
+    makeSwapSequence();
     for (int i = 0; i < swapSequence_pJ.size(); i++) {
         uniform_real_distribution<double> r(0,1);
         if (r(e) < c1) {
@@ -94,6 +155,22 @@ void Particle::update(){
         if (r(e) < c1) {
             int k1 = swapSequence_pM[i][0];
             int k2 = swapSequence_pM[i][1];
+            swap(machineVec[k1], machineVec[k2]);
+        }
+    }
+    for (int i = 0; i < swapSequence_lbJ.size(); i++) {
+        uniform_real_distribution<double> r(0,1);
+        if (r(e) < c2) {
+            int k1 = swapSequence_lbJ[i][0];
+            int k2 = swapSequence_lbJ[i][1];
+            swap(jobVec[k1], jobVec[k2]);
+        }
+    }
+    for (int i = 0; i < swapSequence_lbM.size(); i++) {
+        uniform_real_distribution<double> r(0,1);
+        if (r(e) < c2) {
+            int k1 = swapSequence_lbM[i][0];
+            int k2 = swapSequence_lbM[i][1];
             swap(machineVec[k1], machineVec[k2]);
         }
     }
