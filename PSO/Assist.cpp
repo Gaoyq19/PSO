@@ -7,6 +7,8 @@
 //
 
 #include "Assist.hpp"
+#include "Machine.hpp"
+#include "Job.hpp"
 void Assist::reset(){
     for (int i = 1; i < jobs.size(); i++) {
         jobs[i].reset();

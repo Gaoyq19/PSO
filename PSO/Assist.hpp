@@ -10,8 +10,8 @@
 #define Assist_hpp
 
 #include <stdio.h>
-#include "Job.hpp"
-#include "Machine.hpp"
+class Job;
+class Machine;
 class Assist{
 public:
     const int operations_n;
