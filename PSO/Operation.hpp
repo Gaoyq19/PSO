@@ -25,7 +25,7 @@ private:
 public:
     void add_machine(int number, int time){  //记录可执行该操作的机器以及时间
         execution_time[number] = time;
-        machines.push_back(number);
+        machines.emplace_back(number);
     }
     int execute(int start, int machine_i){ //记录在机器i上执行的开始、结束时间
         this->start = start;

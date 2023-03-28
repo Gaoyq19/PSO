@@ -28,7 +28,7 @@ public:
         return operations[i];
     }
     void set_opr(int size){
-        operations.resize(size);
+        operations.reserve(size);
     }
     bool isFinished() const{
         if (finished_n == n) {
