@@ -48,7 +48,7 @@ public:
     void add_opr(Operation opr, int i){
         opr.set_job(i);
         opr.set_oprNum(n);
-        operations[n] = opr;
+        operations.emplace_back(opr);
         n++;
     }
     void reset(){

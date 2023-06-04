@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		D336048729CB499A008F3A87 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D336048629CB499A008F3A87 /* main.cpp */; };
+		D336048F29CB49C0008F3A87 /* jsoncpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D336048E29CB49C0008F3A87 /* jsoncpp.cpp */; };
+		D336049229CB4EA4008F3A87 /* Machine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D336049029CB4EA4008F3A87 /* Machine.cpp */; };
+		D336049529CB4FC6008F3A87 /* Operation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D336049329CB4FC6008F3A87 /* Operation.cpp */; };
+		D336049829CB5486008F3A87 /* ExecutionAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D336049629CB5486008F3A87 /* ExecutionAgent.cpp */; };
+		D336049B29CB54EF008F3A87 /* Job.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D336049929CB54EF008F3A87 /* Job.cpp */; };
+		D33604B129CB6AD9008F3A87 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D33604AF29CB6AD9008F3A87 /* Particle.cpp */; };
+		D33604C129D0B319008F3A87 /* ClusterAgent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D33604BF29D0B319008F3A87 /* ClusterAgent.cpp */; };
+		D33604C729D0B726008F3A87 /* Assist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D33604C529D0B726008F3A87 /* Assist.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +33,22 @@
 /* Begin PBXFileReference section */
 		D336048329CB499A008F3A87 /* PSO */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PSO; sourceTree = BUILT_PRODUCTS_DIR; };
 		D336048629CB499A008F3A87 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		D336048D29CB49C0008F3A87 /* json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = json; sourceTree = SOURCE_ROOT; };
+		D336048E29CB49C0008F3A87 /* jsoncpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = jsoncpp.cpp; sourceTree = SOURCE_ROOT; };
+		D336049029CB4EA4008F3A87 /* Machine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Machine.cpp; sourceTree = "<group>"; };
+		D336049129CB4EA4008F3A87 /* Machine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Machine.hpp; sourceTree = "<group>"; };
+		D336049329CB4FC6008F3A87 /* Operation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Operation.cpp; sourceTree = "<group>"; };
+		D336049429CB4FC6008F3A87 /* Operation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Operation.hpp; sourceTree = "<group>"; };
+		D336049629CB5486008F3A87 /* ExecutionAgent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ExecutionAgent.cpp; sourceTree = "<group>"; };
+		D336049729CB5486008F3A87 /* ExecutionAgent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ExecutionAgent.hpp; sourceTree = "<group>"; };
+		D336049929CB54EF008F3A87 /* Job.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Job.cpp; sourceTree = "<group>"; };
+		D336049A29CB54EF008F3A87 /* Job.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Job.hpp; sourceTree = "<group>"; };
+		D33604AF29CB6AD9008F3A87 /* Particle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Particle.cpp; path = "../../../../../../../../../Users/gggyq/早稻田ips/毕设/PSO/PSO/Particle.cpp"; sourceTree = SDKROOT; };
+		D33604B029CB6AD9008F3A87 /* Particle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Particle.hpp; sourceTree = "<group>"; };
+		D33604BF29D0B319008F3A87 /* ClusterAgent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ClusterAgent.cpp; sourceTree = "<group>"; };
+		D33604C029D0B319008F3A87 /* ClusterAgent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ClusterAgent.hpp; sourceTree = "<group>"; };
+		D33604C529D0B726008F3A87 /* Assist.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Assist.cpp; sourceTree = "<group>"; };
+		D33604C629D0B726008F3A87 /* Assist.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Assist.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +81,23 @@
 		D336048529CB499A008F3A87 /* PSO */ = {
 			isa = PBXGroup;
 			children = (
+				D336048D29CB49C0008F3A87 /* json */,
+				D336048E29CB49C0008F3A87 /* jsoncpp.cpp */,
 				D336048629CB499A008F3A87 /* main.cpp */,
+				D336049729CB5486008F3A87 /* ExecutionAgent.hpp */,
+				D336049629CB5486008F3A87 /* ExecutionAgent.cpp */,
+				D33604C629D0B726008F3A87 /* Assist.hpp */,
+				D33604C529D0B726008F3A87 /* Assist.cpp */,
+				D33604C029D0B319008F3A87 /* ClusterAgent.hpp */,
+				D33604BF29D0B319008F3A87 /* ClusterAgent.cpp */,
+				D33604B029CB6AD9008F3A87 /* Particle.hpp */,
+				D33604AF29CB6AD9008F3A87 /* Particle.cpp */,
+				D336049A29CB54EF008F3A87 /* Job.hpp */,
+				D336049929CB54EF008F3A87 /* Job.cpp */,
+				D336049129CB4EA4008F3A87 /* Machine.hpp */,
+				D336049029CB4EA4008F3A87 /* Machine.cpp */,
+				D336049429CB4FC6008F3A87 /* Operation.hpp */,
+				D336049329CB4FC6008F3A87 /* Operation.cpp */,
 			);
 			path = PSO;
 			sourceTree = "<group>";
@@ -119,7 +159,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D33604B129CB6AD9008F3A87 /* Particle.cpp in Sources */,
+				D336049229CB4EA4008F3A87 /* Machine.cpp in Sources */,
+				D33604C729D0B726008F3A87 /* Assist.cpp in Sources */,
+				D33604C129D0B319008F3A87 /* ClusterAgent.cpp in Sources */,
 				D336048729CB499A008F3A87 /* main.cpp in Sources */,
+				D336048F29CB49C0008F3A87 /* jsoncpp.cpp in Sources */,
+				D336049B29CB54EF008F3A87 /* Job.cpp in Sources */,
+				D336049529CB4FC6008F3A87 /* Operation.cpp in Sources */,
+				D336049829CB5486008F3A87 /* ExecutionAgent.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +287,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				"HEADER_SEARCH_PATHS[arch=*]" = "/Users/gggyq/早稻田ips/毕设/PSO";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;

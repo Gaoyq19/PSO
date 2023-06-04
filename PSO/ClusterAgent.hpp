@@ -8,7 +8,7 @@
 
 #ifndef ClusterAgent_hpp
 #define ClusterAgent_hpp
-
+#include <iostream>
 #include <stdio.h>
 #include "Particle.hpp"
 using namespace std;
@@ -27,13 +27,21 @@ public:
         }
     }
     void calculate(Assist &assist){
+        double k = 0;
         for (auto i : particles) {
             i->calculate(assist);
+            int makespan = i->get_makespan();
+            k += makespan;
+            if (makespan_LB > makespan) {
+                particle_LB = i;
+                makespan_LB = makespan;
+            }
         }
+        cout<<makespan_LB<<' '<< k / 100 <<endl;
     }
-    void update(){
+    void update(int k){
         for (auto i : particles) {
-            i->update();
+            i->update(k, *particle_LB);
         }
     }
 };

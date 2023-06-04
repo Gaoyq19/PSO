@@ -7,9 +7,23 @@
 //
 
 #include <iostream>
+#include "json/json.h"
+#include "ExecutionAgent.hpp"
+#include "Particle.hpp"
+#include <random>
+using namespace std;
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    srand(time(NULL));
+    ExecutionAgent eA;
+    Assist assist(eA.get_jobs(),eA.get_machines(),eA.get_operationsNumber());
+    eA.initia(assist);
+    eA.make_cluster(assist);
+//    Assist assist(eA);
+//    Particle p(assist);
+//    
+//    p.calculate(assist);
+//    p.toJson(assist);
+    cout<<1;
     return 0;
 }

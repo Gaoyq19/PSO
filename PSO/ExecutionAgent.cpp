@@ -9,13 +9,14 @@
 #include "ExecutionAgent.hpp"
 
 #include <iostream>
-
+#include "Job.hpp"
+#include "Machine.hpp"
 #include "Operation.hpp"
 #include <fstream>
 using namespace std;
 ExecutionAgent::ExecutionAgent(){
     ifstream file;
-    file.open("/Users/gggyq/Downloads/TextData/Monaldo/Fjsp/Job_Data/Brandimarte_Data/Text/Mk001.fjs", ios_base::in);//文件第一行为job数量、machine数量、avg_per_op(未使用)
+    file.open("/Users/gggyq/Downloads/TextData/Monaldo/Fjsp/Job_Data/Brandimarte_Data/Text/Mk01.fjs", ios_base::in);//文件第一行为job数量、machine数量、avg_per_op(未使用)
 
     if (!file.is_open())
     {
@@ -39,7 +40,7 @@ ExecutionAgent::ExecutionAgent(){
         int k = 1;
         int size = arr[0];
         operations_n += size;
-        jobs[index].set_opr(size + 1); //避免vector动态分配
+        jobs[index].set_opr(size + 1); //避免vector动态分配  (opr[0]不使用)
         for (int i = 0; i < size; i++) {
             //每个job添加所有的操作，以及机器与耗时
             Operation opr;
@@ -65,7 +66,7 @@ void ExecutionAgent::splitStr(vector<int> &arr, string &s){
             str = "";
             if (arr.size() == 1) {
                 int size = arr[0] * (machines_n * 2 + 1) + 1; //size的最大值，避免动态分配
-                arr.resize(size);
+                arr.reserve(size);
             }
         }else if(isdigit(s[i])){
             str += s[i];
