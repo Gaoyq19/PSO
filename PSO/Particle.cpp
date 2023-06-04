@@ -79,10 +79,10 @@ void Particle::update(int k, const Particle &gbest){
     double r2_Job = rand() / double(RAND_MAX);
     double r1_Machine = rand() / double(RAND_MAX);
     double r2_Machine = rand() / double(RAND_MAX);
-    w_Job = 1.0 - (1.0 - 0.4) * double(k) / 3000.0;
-    w_Machine = 1.0 - (1.0 - 0.4) * double(k) / 3000.0;
-    double vMax = 4.5 - (4.5 - 1) * double(k) / 3000.0;
-    double vMin = -4.5 + (4.5 - 1) * double(k) / 3000.0;
+    w_Job = 1.0 - (1.0 - 0.4) * double(k) / 1000.0;
+    w_Machine = 1.0 - (1.0 - 0.4) * double(k) / 1000.0;
+    double vMax = 4.5 - (4.5 - 1) * double(k) / 1000.0;
+    double vMin = -4.5 + (4.5 - 1) * double(k) / 1000.0;
     int n = jobVec.size();
     for (int i = 0; i < n; i++) {
         v_jobVec[i] = w_Job * v_jobVec[i] + c1_Job * r1_Job * (gbest.jobVec[i] - jobVec[i]) + c2_Job * r2_Job * (pbestJobVec[i] - jobVec[i]);

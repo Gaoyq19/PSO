@@ -66,6 +66,17 @@ public:
         int r = rand() % n;
         return machines[r];
     }
+    int selectMin(){
+        int min = INT_MAX;
+        int k = -1;
+        for(int i = 0; i < machines.size(); i++){
+            if (execution_time[machines[i]] < min) {
+                min = execution_time[machines[i]];
+                k = machines[i];
+            }
+        }
+        return k;
+    }
 //    void setJob(int i);
 //    void setOprNum(int i);
 };

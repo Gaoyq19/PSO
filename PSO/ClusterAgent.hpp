@@ -15,16 +15,13 @@ using namespace std;
 class ClusterAgent{
 private:
     vector<shared_ptr<Particle>> particles;
-    shared_ptr<Particle> particle_LB;
-    int makespan_LB;
+    shared_ptr<Particle> gbestptr;
+    Particle gbest;
+    int makespan_gbest = INT_MAX;
 public:
+    ClusterAgent(){}
     void add_particle(shared_ptr<Particle> p){
         particles.push_back(p);
-        int makespan = p->get_makespan();
-        if (makespan_LB > makespan) {
-            particle_LB = p;
-            makespan_LB = makespan;
-        }
     }
     void calculate(Assist &assist){
         double k = 0;
@@ -32,16 +29,18 @@ public:
             i->calculate(assist);
             int makespan = i->get_makespan();
             k += makespan;
-            if (makespan_LB > makespan) {
-                particle_LB = i;
-                makespan_LB = makespan;
+            if (makespan_gbest > makespan) {
+                gbestptr = i;
+                makespan_gbest = makespan;
             }
         }
-        cout<<makespan_LB<<' '<< k / 100 <<endl;
+        cout<<makespan_gbest<<' '<< k / 500 <<endl;
+        
     }
     void update(int k){
+        gbest = *gbestptr;
         for (auto i : particles) {
-            i->update(k, *particle_LB);
+            i->update(k, *gbestptr);
         }
     }
 };

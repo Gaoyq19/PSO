@@ -16,6 +16,7 @@ using namespace std;
 //辅助计算、构造，方便根据两个向量计算，记录每个操作在哪个机器执行及开始结束时间，以及makespan
 class Particle{
 public:
+    Particle(){}
     Particle(Assist &assist); //初始化向量，默认随机生成向量
     void calculate(Assist &assist); //计算makespan
     void update(int k,const Particle &gbest);
@@ -30,8 +31,8 @@ private:
     //构造函数中赋值
     vector<int> jobVec;
     vector<int> machineVec;
-    vector<int> v_jobVec;
-    vector<int> v_machineVec;
+    vector<double> v_jobVec;
+    vector<double> v_machineVec;
     vector<int> pbestJobVec; //personalbest向量
     vector<int> pbestMachineVec; //personalbest向量
     int makespan = -1;

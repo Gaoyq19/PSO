@@ -19,6 +19,7 @@ int main(int argc, const char * argv[]) {
     Assist assist(eA.get_jobs(),eA.get_machines(),eA.get_operationsNumber());
     eA.initia(assist);
     eA.make_cluster(assist);
+    //eA.make_cluster(assist);
 //    Assist assist(eA);
 //    Particle p(assist);
 //    
