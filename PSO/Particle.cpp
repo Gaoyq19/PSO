@@ -13,14 +13,23 @@
 #include <fstream>
 #include <list>
 #include <iostream>
+#include <random>
 using namespace std;
 Particle::Particle(Assist &assist){
     int n = assist.jobs.size() - 1;
-    jobVec.resize(assist.operations_n);
-    machineVec.resize(assist.operations_n);
-    v_jobVec.resize(assist.operations_n);
-    v_machineVec.resize(assist.operations_n);
+    size = assist.operations_n;
+    jobVec.resize(size);
+    machineVec.resize(size);
+    v_jobVec.resize(size);
+    v_machineVec.resize(size);
     for (int i = 0; i < assist.operations_n; i++) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        double minVal = 0.0;
+        double maxVal = 1.0;
+        std::uniform_real_distribution<double> distribution(minVal, maxVal);
+        double r1 =  distribution(gen);
+        double r2 =  distribution(gen);
         int r = rand() % n + 1;
         while (assist.jobs[r].isFinished()) {   //随机选择一个未完成的作业
             r = rand() % n + 1;
@@ -28,10 +37,8 @@ Particle::Particle(Assist &assist){
         jobVec[i] = r;
         machineVec[i] = assist.jobs[r].random_selectMachine();
         assist.jobs[r].execute();
-        double r1 =  rand() / double(RAND_MAX);
-        double r2 =  rand() / double(RAND_MAX);
-        v_jobVec [i] = 1-r1*2;
-        v_machineVec [i] = 1-r2*2;
+        v_jobVec[i] = 0;
+        v_machineVec[i] = 0;
     }
     assist.reset();
     pbestJobVec = jobVec;
@@ -52,9 +59,24 @@ void Particle::calculate(Assist &assist){
             jobVec[i] = 1;
         }
         while(assist.jobs[jobVec[i]].isFinished()){
-            jobVec[i]--;
-            if (jobVec[i] == 0) {
-                jobVec[i] = assist.jobs.size() - 1;
+//            if(v_jobVec[i] > 0){
+//                jobVec[i]++;
+//                if (jobVec[i] >= assist.jobs.size()) {
+//                    jobVec[i] = 1;
+//                }
+//            }else{
+//                jobVec[i]--;
+//                if (jobVec[i] == 0) {
+//                    jobVec[i] = assist.jobs.size() - 1;
+//                }
+//            }
+//            jobVec[i]--;
+//            if (jobVec[i] == 0) {
+//                jobVec[i] = assist.jobs.size() - 1;
+//            }
+            jobVec[i]++;
+            if (jobVec[i] >= assist.jobs.size()) {
+                jobVec[i] = 1;
             }
         }
         job_i = jobVec[i];
@@ -74,18 +96,62 @@ void Particle::calculate(Assist &assist){
     }
     assist.reset();
 }
-void Particle::update(int k, const Particle &gbest){
-    double r1_Job = rand() / double(RAND_MAX);
-    double r2_Job = rand() / double(RAND_MAX);
-    double r1_Machine = rand() / double(RAND_MAX);
-    double r2_Machine = rand() / double(RAND_MAX);
-    w_Job = 1.0 - (1.0 - 0.4) * double(k) / 1000.0;
-    w_Machine = 1.0 - (1.0 - 0.4) * double(k) / 1000.0;
-    double vMax = 4.5 - (4.5 - 1) * double(k) / 1000.0;
-    double vMin = -4.5 + (4.5 - 1) * double(k) / 1000.0;
+void Particle::updatebest(int k, int iterations, const Particle &gbest){
+    int n = jobVec.size();
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> distribution(0, 1);
+    double r = distribution(gen);
+    setp();
+    for (int i = 0; i < n; i++) {
+        double vlow = 3.5, vup = 4.5;
+        double vMax = vup - (vup - vlow) * double(k) / double(iterations);
+        double vMin = -vup + (vup - vlow) * double(k) / double(iterations);
+        v_jobVec[i] = w_Job * v_jobVec[i] + gbest.jobVec[i] - jobVec[i] + p * (1 - 2 * r);
+        v_machineVec[i] = w_Machine * v_machineVec[i] + gbest.machineVec[i] - machineVec[i] + p * (1 - 2 * r);
+        if (v_jobVec[i] > vMax) {
+            v_jobVec[i] = vMax;
+        }
+        if (v_jobVec[i] < vMin) {
+            v_jobVec[i] = vMin;
+        }
+        if (v_machineVec[i] > vMax) {
+            v_machineVec[i] = vMax;
+        }
+        if (v_machineVec[i] < vMin) {
+            v_machineVec[i] = vMin;
+        }
+        jobVec[i] = ceil(v_jobVec[i] + jobVec[i]);
+        machineVec[i] = ceil(v_machineVec[i] + machineVec[i]);
+    }
+}
+void Particle::update(int k, int iterations, const Particle &gbest){
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    double minVal = 0.0;
+    double maxVal = 1.0;
+    std::uniform_real_distribution<double> distribution(minVal, maxVal);
+    double r1_Job = distribution(gen);
+    double r2_Job = distribution(gen);
+    double r1_Machine = distribution(gen);
+    double r2_Machine = distribution(gen);
+    double r_Job = distribution(gen);
+    double r_Machine = distribution(gen);
+    w_Job = 0.9 - (0.5) * double(k) / double(iterations);
+    w_Machine = 0.9 - (0.5) * double(k) / double(iterations);
+//    c1_Job = 0.5 + (2) * double(k) / double(iterations); //前期小
+//    c2_Job = 2.5 - (2) * double(k) / double(iterations); //前期大
+//    c1_Machine = 0.5 + (2) * double(k) / double(iterations);
+//    c2_Machine = 2.5 - (2) * double(k) / double(iterations);
+    double vlow = 3.5, vup = 4.5;
+    double vMax = vup - (vup - vlow) * double(k) / double(iterations);
+    double vMin = -vup + (vup - vlow) * double(k) / double(iterations);
+    
+
     int n = jobVec.size();
     for (int i = 0; i < n; i++) {
         v_jobVec[i] = w_Job * v_jobVec[i] + c1_Job * r1_Job * (gbest.jobVec[i] - jobVec[i]) + c2_Job * r2_Job * (pbestJobVec[i] - jobVec[i]);
+        
         if (v_jobVec[i] > vMax) {
             v_jobVec[i] = vMax;
         }
@@ -94,6 +160,7 @@ void Particle::update(int k, const Particle &gbest){
         }
         jobVec[i] = ceil(v_jobVec[i] + jobVec[i]);
         v_machineVec[i] = w_Machine * v_machineVec[i] + c1_Machine * r1_Machine * (gbest.machineVec[i] - machineVec[i]) + c2_Machine * r2_Machine * (pbestMachineVec[i] - machineVec[i]);
+        
         if (v_machineVec[i] > vMax) {
             v_machineVec[i] = vMax;
         }
@@ -104,128 +171,7 @@ void Particle::update(int k, const Particle &gbest){
     }
 
 }
-//int Particle::get_dis(shared_ptr<Particle> p1, shared_ptr<Particle> p2){
-//    vector<int> tmp = p1->jobVec;
-//    vector<int> tmp1 = p1->machineVec;
-//    int dis = 0;
-//    for (int i = 0; i < p1->jobVec.size(); i++) {
-//        if (p2->jobVec[i] == tmp[i]) {
-//            continue;
-//        }
-//        for (int j = i + 1; j < p1->jobVec.size(); j++) {
-//            if (p2->jobVec[i] == tmp[j]) {
-//                dis++;
-//                swap(tmp[i],tmp[j]);
-//                break;
-//            }
-//        }
-//    }
-//
-//    for (int i = 0; i < p1->machineVec.size(); i++) {
-//        if (p2->machineVec[i] == tmp1[i]) {
-//            continue;
-//        }
-//        for (int j = i + 1; j < p1->machineVec.size(); j++) {
-//            if (p2->machineVec[i] == tmp1[j]) {
-//                dis++;
-//                swap(tmp1[i],tmp1[j]);
-//                break;
-//            }
-//        }
-//    }
-//    return dis;
-//}
 
-//void Particle::makeSwapSequence(){
-//    vector<int> tmp = jobVec;
-//    vector<int> tmp1 = machineVec;
-//    for (int i = 0; i < pbestJobVec.size(); i++) {
-//        if (pbestJobVec[i] == tmp[i]) {
-//            continue;
-//        }
-//        for (int j = i + 1; j < jobVec.size(); j++) {
-//            if (pbestJobVec[i] == tmp[j]) {
-//                swapSequence_pJ.push_back(vector<int>{i,j});
-//                swap(tmp[i],tmp[j]);
-//                break;
-//            }
-//        }
-//    }
-//    for (int i = 0; i < pbestMachineVec.size(); i++) {
-//        if (pbestMachineVec[i] == tmp1[i]) {
-//            continue;
-//        }
-//        for (int j = i + 1; j < machineVec.size(); j++) {
-//            if (pbestMachineVec[i] == tmp1[j]) {
-//                swapSequence_pM.push_back(vector<int>{i,j});
-//                swap(tmp[i],tmp[j]);
-//                break;
-//            }
-//        }
-//    }
-//    for (int i = 0; i < lbestJobVec.size(); i++) {
-//        if (lbestJobVec[i] == tmp[i]) {
-//            continue;
-//        }
-//        for (int j = i + 1; j < jobVec.size(); j++) {
-//            if (lbestJobVec[i] == tmp[j]) {
-//                swapSequence_lbJ.push_back(vector<int>{i,j});
-//                swap(tmp[i],tmp[j]);
-//                break;
-//            }
-//        }
-//    }
-//    for (int i = 0; i < lbestMachineVec.size(); i++) {
-//        if (lbestMachineVec[i] == tmp1[i]) {
-//            continue;
-//        }
-//        for (int j = i + 1; j < machineVec.size(); j++) {
-//            if (lbestMachineVec[i] == tmp1[j]) {
-//                swapSequence_lbM.push_back(vector<int>{i,j});
-//                swap(tmp[i],tmp[j]);
-//                break;
-//            }
-//        }
-//    }
-//}
-//void Particle::update(Particle lbest){
-//    default_random_engine e(time(0));
-//    lbestJobVec = lbest.jobVec;
-//    lbestMachineVec = lbest.machineVec;
-//    makeSwapSequence();
-//    for (int i = 0; i < swapSequence_pJ.size(); i++) {
-//        uniform_real_distribution<double> r(0,1);
-//        if (r(e) < c1) {
-//            int k1 = swapSequence_pJ[i][0];
-//            int k2 = swapSequence_pJ[i][1];
-//            swap(jobVec[k1], jobVec[k2]);
-//        }
-//    }
-//    for (int i = 0; i < swapSequence_pM.size(); i++) {
-//        uniform_real_distribution<double> r(0,1);
-//        if (r(e) < c1) {
-//            int k1 = swapSequence_pM[i][0];
-//            int k2 = swapSequence_pM[i][1];
-//            swap(machineVec[k1], machineVec[k2]);
-//        }
-//    }
-//    for (int i = 0; i < swapSequence_lbJ.size(); i++) {
-//        uniform_real_distribution<double> r(0,1);
-//        if (r(e) < c2) {
-//            int k1 = swapSequence_lbJ[i][0];
-//            int k2 = swapSequence_lbJ[i][1];
-//            swap(jobVec[k1], jobVec[k2]);
-//        }
-//    }
-//    for (int i = 0; i < swapSequence_lbM.size(); i++) {
-//        uniform_real_distribution<double> r(0,1);
-//        if (r(e) < c2) {
-//            int k1 = swapSequence_lbM[i][0];
-//            int k2 = swapSequence_lbM[i][1];
-//            swap(machineVec[k1], machineVec[k2]);
-//        }
-//    }
-//}
 string Particle::fillZero(const string &s){
     string str;
     for (int i = 0; i < 4 - s.size(); i++) {

@@ -9,17 +9,15 @@
 #include "Operation.hpp"
 
 int Operation::check(int machine_i){
-    if (execution_time.count(machine_i)) {
-        return machine_i;
-    }else{
-        int m = INT_MAX;
-        int m_i = -1;
-        for (auto i : execution_time) {
-            if(i.second < m){
-                m = i.second;
-                m_i = i.first;
-            }
+    int diff = INT_MAX;
+    int result = -1;
+    for (int i = 0; i < machines.size(); i++) {
+        int n = abs(machine_i - machines[i]);
+        if (diff > n) {
+            diff = n;
+            result = machines[i];
         }
-        return m_i;
     }
+    return  result;
+
 }

@@ -76,3 +76,42 @@ void ExecutionAgent::splitStr(vector<int> &arr, string &s){
         arr[k] = stoi(str);
     }
 }
+double ExecutionAgent::calculateDistance(shared_ptr<Particle> p1, const Point &p2){
+    double dis = 0;
+    for (int i = 0; i < p1->get_size(); i++) {
+        dis += abs(p1->get_jobVec()[i] - p2.jobVec[i]);
+        dis += abs(p1->get_machineVec()[i] - p2.machineVec[i]);
+    }
+    return dis;
+}
+vector<Point*> ExecutionAgent::calculateCentroids(int k){
+    vector<int> clusterCounts(k, 0);
+    for(auto particle : populations){
+        int cluster = particle->cluster;
+        int n = particle->get_size();
+        ++clusterCounts[cluster];
+        for(int i = 0; i < n; i++){
+            centroids[cluster]->jobVec[i] += particle->get_jobVec()[i];
+            centroids[cluster]->machineVec[i] += particle->get_machineVec()[i];
+        }
+    }
+    for(auto &centroid : centroids) {
+        for(int i = 0; i < centroid->jobVec.size(); i++){
+            centroid->jobVec[i] /= clusterCounts[centroid->cluster];
+            centroid->machineVec[i] /= clusterCounts[centroid->cluster];
+        }
+    }
+    return centroids;
+}
+void ExecutionAgent::assignPointsToClusters(const std::vector<Point*>& centroids) {
+    for (auto particle : populations) {
+        double minDistance = std::numeric_limits<double>::max();
+        for (size_t i = 0; i < centroids.size(); ++i) {
+            double distance = calculateDistance(particle, *centroids[i]);
+            if (distance < minDistance) {
+                minDistance = distance;
+                particle->cluster = i;
+            }
+        }
+    }
+}

@@ -13,34 +13,65 @@
 #include "Particle.hpp"
 using namespace std;
 class ClusterAgent{
-private:
+public:
     vector<shared_ptr<Particle>> particles;
     shared_ptr<Particle> gbestptr;
-    Particle gbest;
+    int sequence;
     int makespan_gbest = INT_MAX;
-public:
+    Particle gbest;
     ClusterAgent(){}
     void add_particle(shared_ptr<Particle> p){
         particles.push_back(p);
     }
+    void add_particle2(vector<shared_ptr<Particle>> &popu){
+        for (int i = 0; i < 300; i++) {
+            particles[i] = popu[i];
+        }
+    }
     void calculate(Assist &assist){
         double k = 0;
+        
         for (auto i : particles) {
             i->calculate(assist);
             int makespan = i->get_makespan();
             k += makespan;
-            if (makespan_gbest > makespan) {
-                gbestptr = i;
-                makespan_gbest = makespan;
+            
+            if (i == gbestptr) {
+                if (makespan >= makespan_gbest) {
+                    gbestptr->failureTimes++;
+                    gbestptr->successTimes = 0;
+                }else{
+                    gbestptr->failureTimes = 0;
+                    gbestptr->successTimes++;
+                    makespan_gbest = makespan;
+                    gbest = *i;
+                    gbestptr = i;
+                }
+            }else{
+                if (!gbestptr) {
+                    gbestptr = i;
+                }
+                if (makespan_gbest > makespan) {
+                    makespan_gbest = makespan;
+                    gbestptr->setzero();
+                    gbest = *i;
+                    gbestptr = i;
+
+                }
             }
+           
+            
         }
-        cout<<makespan_gbest<<' '<< k / 500 <<endl;
+        cout<<gbestptr->get_makespan()<<' '<< double(k) / particles.size() <<' '<< makespan_gbest << ' '<< particles[0]->cluster <<endl;
         
     }
-    void update(int k){
-        gbest = *gbestptr;
+    void update(int k, int iterations){
         for (auto i : particles) {
-            i->update(k, *gbestptr);
+            if (i == gbestptr) {
+                i->updatebest(k, iterations, gbest);
+            }else{
+                i->update(k, iterations, gbest);
+            }
         }
     }
 };

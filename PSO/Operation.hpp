@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <map>
+#include <random>
 #include <vector>
 using namespace std;
 class Operation{
@@ -62,21 +63,14 @@ public:
         execution_machine = 0;
     }
     int random_selectMachine(){
-        int n = machines.size();
-        int r = rand() % n;
-        return machines[r];
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        int minVal = 0;
+        int maxVal = machines.size();
+        std::uniform_int_distribution<double> distribution(minVal, maxVal);
+        return machines[distribution(gen)];
     }
-    int selectMin(){
-        int min = INT_MAX;
-        int k = -1;
-        for(int i = 0; i < machines.size(); i++){
-            if (execution_time[machines[i]] < min) {
-                min = execution_time[machines[i]];
-                k = machines[i];
-            }
-        }
-        return k;
-    }
+
 //    void setJob(int i);
 //    void setOprNum(int i);
 };

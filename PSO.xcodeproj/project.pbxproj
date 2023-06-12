@@ -86,12 +86,12 @@
 				D336048629CB499A008F3A87 /* main.cpp */,
 				D336049729CB5486008F3A87 /* ExecutionAgent.hpp */,
 				D336049629CB5486008F3A87 /* ExecutionAgent.cpp */,
+				D33604B029CB6AD9008F3A87 /* Particle.hpp */,
+				D33604AF29CB6AD9008F3A87 /* Particle.cpp */,
 				D33604C629D0B726008F3A87 /* Assist.hpp */,
 				D33604C529D0B726008F3A87 /* Assist.cpp */,
 				D33604C029D0B319008F3A87 /* ClusterAgent.hpp */,
 				D33604BF29D0B319008F3A87 /* ClusterAgent.cpp */,
-				D33604B029CB6AD9008F3A87 /* Particle.hpp */,
-				D33604AF29CB6AD9008F3A87 /* Particle.cpp */,
 				D336049A29CB54EF008F3A87 /* Job.hpp */,
 				D336049929CB54EF008F3A87 /* Job.cpp */,
 				D336049129CB4EA4008F3A87 /* Machine.hpp */,
@@ -286,6 +286,7 @@
 		D336048B29CB499A008F3A87 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CODE_SIGN_STYLE = Automatic;
 				"HEADER_SEARCH_PATHS[arch=*]" = "/Users/gggyq/早稻田ips/毕设/PSO";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -295,6 +296,7 @@
 		D336048C29CB499A008F3A87 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
