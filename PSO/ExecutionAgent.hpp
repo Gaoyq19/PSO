@@ -24,7 +24,6 @@ class Point{
 public:
     vector<double> jobVec;
     vector<double> machineVec;
-    
     int cluster;
     Point(Particle &p,int k){
         cout<<"Point";
@@ -57,7 +56,7 @@ public:
             centroids.push_back(centroid);
         }
         int iteration = 0;
-        int maxIterations = 5;
+        int maxIterations = 1;
         while (iteration < maxIterations) {
             assignPointsToClusters(centroids);
             std::vector<Point*> newCentroids = calculateCentroids(k);
@@ -79,6 +78,7 @@ public:
             agent[0].calculate(assist);
             agent[0].update(i, iterations);
         }
+        agent[0].showpro();
     }
     void make_cluster(Assist &assist){
         srand(time(NULL));
@@ -126,6 +126,12 @@ public:
                 }
                 k = 0;
             }
+        }
+
+    }
+    void showpro(){
+        for (auto i : agent) {
+            i.showpro();
         }
     }
     void contin(Assist &assist){

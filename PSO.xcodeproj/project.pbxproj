@@ -40,7 +40,7 @@
 		D336049329CB4FC6008F3A87 /* Operation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Operation.cpp; sourceTree = "<group>"; };
 		D336049429CB4FC6008F3A87 /* Operation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Operation.hpp; sourceTree = "<group>"; };
 		D336049629CB5486008F3A87 /* ExecutionAgent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ExecutionAgent.cpp; sourceTree = "<group>"; };
-		D336049729CB5486008F3A87 /* ExecutionAgent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ExecutionAgent.hpp; sourceTree = "<group>"; };
+		D336049729CB5486008F3A87 /* ExecutionAgent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = ExecutionAgent.hpp; path = "/Users/gggyq/早稻田ips/毕设/PSO/PSO/ExecutionAgent.hpp"; sourceTree = "<absolute>"; };
 		D336049929CB54EF008F3A87 /* Job.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Job.cpp; sourceTree = "<group>"; };
 		D336049A29CB54EF008F3A87 /* Job.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Job.hpp; sourceTree = "<group>"; };
 		D33604AF29CB6AD9008F3A87 /* Particle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Particle.cpp; path = "../../../../../../../../../Users/gggyq/早稻田ips/毕设/PSO/PSO/Particle.cpp"; sourceTree = SDKROOT; };

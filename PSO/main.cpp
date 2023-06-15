@@ -29,15 +29,16 @@ int main(int argc, const char * argv[]) {
     for (std::thread& thread : threads) {
         thread.join();
     }
-//    for (int i = 9; i < 100; i++) {
-//        eA.contin(assist);
-//    }
+    if (eA.get_best().makespan <= 42) {
+        eA.showpro();
+        eA.get_best().toJson(assist);
+    }
+    
+    for (int i = 9; i < 100; i++) {
+        eA.contin(assist);
+    }
 
-    //    Assist assist(eA);
-//    Particle p(assist);
-//
-//    p.calculate(assist);
-//    p.toJson(assist);
+
     cout<<1;
     return 0;
 }
